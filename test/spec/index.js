@@ -125,7 +125,7 @@ describe('Resizable', () => {
 
     describe('when component updates', () => {
       beforeEach(() => {
-        component.update();
+        component.instance().forceUpdate();
       });
 
       tests();
