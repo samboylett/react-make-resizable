@@ -168,6 +168,14 @@ describe('Resizable', () => {
   const mouseDownTests = (tests) => {
     describe('when mouse down on resizer', () => {
       beforeEach(() => {
+        jest.spyOn(component.find('span').instance(), 'getBoundingClientRect')
+          .mockImplementation(() => ({
+            left: 10,
+            top: 10,
+            right: 50,
+            bottom: 50
+          }));
+
         jest.spyOn(document.body, 'addEventListener');
 
         const event = new MouseEvent('mousedown');
@@ -233,20 +241,12 @@ describe('Resizable', () => {
 
       describe('when mouse move on body', () => {
         beforeEach(() => {
-          jest.spyOn(component.find('span').instance(), 'getBoundingClientRect')
-            .mockImplementation(() => ({
-              left: 10,
-              top: 10,
-              right: 50,
-              bottom: 50
-            }));
-
           const event = new MouseEvent('mousemove', { clientX: 100 });
 
           document.body.dispatchEvent(event);
         });
 
-        it('sets the style to the mouse distance from the left side', () => {
+        it('sets the width to the mouse distance from the left side', () => {
           expect(component.find('span').instance().style.width).toEqual('90px');
         });
       });
@@ -272,6 +272,18 @@ describe('Resizable', () => {
 
       it('sets the position var to top', () => {
         expect(component.instance().position).toEqual('top');
+      });
+
+      describe('when mouse move on body', () => {
+        beforeEach(() => {
+          const event = new MouseEvent('mousemove', { clientY: 40 });
+
+          document.body.dispatchEvent(event);
+        });
+
+        it('sets the height to the mouse distance from the bottom side', () => {
+          expect(component.find('span').instance().style.height).toEqual('10px');
+        });
       });
     });
   });
