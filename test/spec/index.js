@@ -183,6 +183,30 @@ describe('Resizable', () => {
       });
 
       tests();
+
+      describe('when mouse up on body', () => {
+        beforeEach(() => {
+          jest.spyOn(document.body, 'removeEventListener');
+
+          const event = new MouseEvent('mouseup');
+
+          document.body.dispatchEvent(event);
+        });
+
+        it('sets the body cursor to auto', () => {
+          expect(document.body.style.cursor).toEqual('auto');
+        });
+
+        ['mouseup', 'mousemove'].forEach((eventType) => {
+          it(`removes the ${eventType} event listener added the body`, () => {
+            const [, func] =
+              document.body.addEventListener.mock.calls.find(([type]) => type === eventType);
+
+            expect(document.body.removeEventListener)
+              .toHaveBeenCalledWith(eventType, func);
+          });
+        });
+      });
     });
   };
 
@@ -224,30 +248,6 @@ describe('Resizable', () => {
 
         it('sets the style to the mouse distance from the left side', () => {
           expect(component.find('span').instance().style.width).toEqual('90px');
-        });
-      });
-
-      describe('when mouse up on body', () => {
-        beforeEach(() => {
-          jest.spyOn(document.body, 'removeEventListener');
-
-          const event = new MouseEvent('mouseup');
-
-          document.body.dispatchEvent(event);
-        });
-
-        it('sets the body cursor to auto', () => {
-          expect(document.body.style.cursor).toEqual('auto');
-        });
-
-        ['mouseup', 'mousemove'].forEach((eventType) => {
-          it(`removes the ${eventType} event listener added the body`, () => {
-            const [, func] =
-              document.body.addEventListener.mock.calls.find(([type]) => type === eventType);
-
-            expect(document.body.removeEventListener)
-              .toHaveBeenCalledWith(eventType, func);
-          });
         });
       });
     });
