@@ -194,14 +194,11 @@ describe('Resizable', () => {
         expect(document.body.style.cursor).toEqual('col-resize');
       });
 
-      it('adds a mouseup event listener to the body', () => {
-        expect(document.body.addEventListener)
-          .toHaveBeenCalledWith('mouseup', expect.any(Function));
-      });
-
-      it('adds a mousemove event listener to the body', () => {
-        expect(document.body.addEventListener)
-          .toHaveBeenCalledWith('mousemove', expect.any(Function));
+      ['mouseup', 'mousemove'].forEach((type) => {
+        it(`adds a ${type} event listener to the body`, () => {
+          expect(document.body.addEventListener)
+            .toHaveBeenCalledWith(type, expect.any(Function));
+        });
       });
 
       describe('when mouse up on body', () => {
@@ -217,20 +214,14 @@ describe('Resizable', () => {
           expect(document.body.style.cursor).toEqual('auto');
         });
 
-        it('removes the mouseup event listener added the body', () => {
-          const [, func] =
-            document.body.addEventListener.mock.calls.find(([type]) => type === 'mouseup');
+        ['mouseup', 'mousemove'].forEach((eventType) => {
+          it(`removes the ${eventType} event listener added the body`, () => {
+            const [, func] =
+              document.body.addEventListener.mock.calls.find(([type]) => type === eventType);
 
-          expect(document.body.removeEventListener)
-            .toHaveBeenCalledWith('mouseup', func);
-        });
-
-        it('removes the mousemove event listener added the body', () => {
-          const [, func] =
-            document.body.addEventListener.mock.calls.find(([type]) => type === 'mousemove');
-
-          expect(document.body.removeEventListener)
-            .toHaveBeenCalledWith('mousemove', func);
+            expect(document.body.removeEventListener)
+              .toHaveBeenCalledWith(eventType, func);
+          });
         });
       });
     });
