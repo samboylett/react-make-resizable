@@ -58,6 +58,20 @@ describe('Resizer', () => {
     });
   };
 
+  describe('when styled', () => {
+    beforeEach(() => {
+      component = mount((
+        <Resizer position="left" style={{ background: 'blue' }} />
+      ));
+    });
+
+    it('maintains those styles', () => {
+      expect(component.find('div').instance().style.background).toEqual('blue');
+    });
+
+    alwaysStyleTests();
+  });
+
   describe('when position left', () => {
     beforeEach(() => {
       component = mount((
