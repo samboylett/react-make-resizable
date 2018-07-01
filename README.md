@@ -36,6 +36,28 @@ return (
 );
 ```
 
+### As a HOC
+
+Using `makeResizable` to wrap your component will remove the need to use `Resizable`, and automatically handle the `onResize*` props without you having to pass them through yourself.
+
+```jsx
+import { makeResizable, Resizer } from 'react-make-resizable';
+
+class ResizableBox extends React.Component {
+  render() {
+    <div class="my-resizable-element">
+      Resizable Box
+      <Resizer position="top" />
+      <Resizer position="right" />
+      <Resizer position="bottom" />
+      <Resizer position="left" />
+    </div>
+  }
+}
+
+export default makeResizable(ResizableBox);
+```
+
 ## Components
 
 ### Resizable
@@ -53,6 +75,10 @@ Called on each update (i.e. when the mouse moves) with the mouse event, current 
 #### onResizeEnd
 
 Called when the resize ends with the mouse event, final bounding rectangle of the element and the side which was being dragged
+
+### makeResizable
+
+Components returned by this HOC take the same props as Resizable, any other props will be passed to the wrapped component.
 
 ### Resizer
 
