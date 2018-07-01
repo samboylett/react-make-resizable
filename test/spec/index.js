@@ -176,6 +176,10 @@ describe('Resizable', () => {
       it('sets the child position to relative', () => {
         expect(component.find('div').instance().style.position).toEqual('relative');
       });
+
+      it('sets the child box-sizing to border-box', () => {
+        expect(component.find('div').instance().style.boxSizing).toEqual('border-box');
+      });
     });
   });
 
