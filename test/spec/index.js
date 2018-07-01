@@ -120,6 +120,18 @@ describe('Resizer', () => {
 });
 
 describe('Resizable', () => {
+  const withWhenComponentUpdates = (tests) => {
+    tests();
+
+    describe('when component updates', () => {
+      beforeEach(() => {
+        component.update();
+      });
+
+      tests();
+    });
+  };
+
   describe('when passed more than 1 child', () => {
     it('throws an error', () => {
       expect(() => {
@@ -156,62 +168,66 @@ describe('Resizable', () => {
       ));
     });
 
-    it('renders the passed children', () => {
-      expect(component.find('div')).toHaveText('Foo bar');
-    });
+    withWhenComponentUpdates(() => {
+      it('renders the passed children', () => {
+        expect(component.find('div')).toHaveText('Foo bar');
+      });
 
-    it('sets the child position to relative', () => {
-      expect(component.find('div').instance().style.position).toEqual('relative');
+      it('sets the child position to relative', () => {
+        expect(component.find('div').instance().style.position).toEqual('relative');
+      });
     });
   });
 
   const mouseDownTests = (tests) => {
-    describe('when mouse down on resizer', () => {
-      beforeEach(() => {
-        jest.spyOn(component.find('span').instance(), 'getBoundingClientRect')
-          .mockImplementation(() => ({
-            left: 10,
-            top: 10,
-            right: 50,
-            bottom: 50
-          }));
-
-        jest.spyOn(document.body, 'addEventListener');
-
-        const event = new MouseEvent('mousedown');
-
-        component.find(Resizer).find('div').instance().dispatchEvent(event);
-      });
-
-      ['mouseup', 'mousemove'].forEach((type) => {
-        it(`adds a ${type} event listener to the body`, () => {
-          expect(document.body.addEventListener)
-            .toHaveBeenCalledWith(type, expect.any(Function));
-        });
-      });
-
-      tests();
-
-      describe('when mouse up on body', () => {
+    withWhenComponentUpdates(() => {
+      describe('when mouse down on resizer', () => {
         beforeEach(() => {
-          jest.spyOn(document.body, 'removeEventListener');
+          jest.spyOn(component.find('span').instance(), 'getBoundingClientRect')
+            .mockImplementation(() => ({
+              left: 10,
+              top: 10,
+              right: 50,
+              bottom: 50
+            }));
 
-          const event = new MouseEvent('mouseup');
+          jest.spyOn(document.body, 'addEventListener');
 
-          document.body.dispatchEvent(event);
+          const event = new MouseEvent('mousedown');
+
+          component.find(Resizer).find('div').instance().dispatchEvent(event);
         });
 
-        it('sets the body cursor to auto', () => {
-          expect(document.body.style.cursor).toEqual('auto');
+        ['mouseup', 'mousemove'].forEach((type) => {
+          it(`adds a ${type} event listener to the body`, () => {
+            expect(document.body.addEventListener)
+              .toHaveBeenCalledWith(type, expect.any(Function));
+          });
         });
 
-        ['mouseup', 'mousemove'].forEach((eventType) => {
-          it(`removes the ${eventType} event listener added the body`, () => {
-            const [, func] =
-              document.body.addEventListener.mock.calls.find(([type]) => type === eventType);
+        tests();
 
-            expect(document.body.removeEventListener)
-              .toHaveBeenCalledWith(eventType, func);
+        describe('when mouse up on body', () => {
+          beforeEach(() => {
+            jest.spyOn(document.body, 'removeEventListener');
+
+            const event = new MouseEvent('mouseup');
+
+            document.body.dispatchEvent(event);
+          });
+
+          it('sets the body cursor to auto', () => {
+            expect(document.body.style.cursor).toEqual('auto');
+          });
+
+          ['mouseup', 'mousemove'].forEach((eventType) => {
+            it(`removes the ${eventType} event listener added the body`, () => {
+              const [, func] =
+                document.body.addEventListener.mock.calls.find(([type]) => type === eventType);
+
+              expect(document.body.removeEventListener)
+                .toHaveBeenCalledWith(eventType, func);
+            });
           });
         });
       });
