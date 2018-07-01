@@ -393,4 +393,35 @@ describe('Resizable', () => {
       });
     });
   });
+
+  describe('with onResizeStart callback', () => {
+    let onResizeStart;
+
+    beforeEach(() => {
+      onResizeStart = jest.fn();
+
+      component = mount((
+        <Resizable onResizeStart={onResizeStart}>
+          <span>
+            Foo bar
+            <Resizer position="right" />
+          </span>
+        </Resizable>
+      ));
+    });
+
+    describe('when mouse down on resizer', () => {
+      let event;
+
+      beforeEach(() => {
+        event = new MouseEvent('mousedown');
+
+        component.find(Resizer).find('div').instance().dispatchEvent(event);
+      });
+
+      it('calls onResizeStart prop with event', () => {
+        expect(onResizeStart).toHaveBeenCalledWith(event, 'right');
+      });
+    });
+  });
 });
