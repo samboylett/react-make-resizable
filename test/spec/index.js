@@ -139,7 +139,9 @@ describe('Resizable', () => {
 
     describe('when component updates', () => {
       beforeEach(() => {
-        component.instance().forceUpdate();
+        // Enzyme doesn't seem to remove old HTML elements like React in the browser does
+        component.instance().element.style = {};
+        component.instance().componentDidUpdate();
       });
 
       tests();
