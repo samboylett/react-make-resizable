@@ -394,55 +394,64 @@ describe('Resizable', () => {
     });
   });
 
-  describe('with onResizeStart callback', () => {
-    let onResizeStart;
-    let onResizeEnd;
-
-    beforeEach(() => {
-      onResizeStart = jest.fn();
-      onResizeEnd = jest.fn();
-
-      component = mount((
-        <Resizable
-          onResizeStart={onResizeStart}
-          onResizeEnd={onResizeEnd}
-        >
-          <span>
-            Foo bar
-            <Resizer position="right" />
-          </span>
-        </Resizable>
-      ));
-    });
-
-    describe('when mouse down on resizer', () => {
-      let event;
+  const withCallbacks = (position, axis) => {
+    describe(`with callbacks and position ${position}`, () => {
+      let onResizeStart;
+      let onResizeEnd;
 
       beforeEach(() => {
-        event = new MouseEvent('mousedown');
+        onResizeStart = jest.fn();
+        onResizeEnd = jest.fn();
 
-        component.find(Resizer).find('div').instance().dispatchEvent(event);
+        component = mount((
+          <Resizable
+            onResizeStart={onResizeStart}
+            onResizeEnd={onResizeEnd}
+          >
+            <span>
+              Foo bar
+              <Resizer position={position} />
+            </span>
+          </Resizable>
+        ));
       });
 
-      it('calls onResizeStart prop with event', () => {
-        expect(onResizeStart).toHaveBeenCalledWith(event, 'right');
-      });
+      describe('when mouse down on resizer', () => {
+        let event;
 
-      describe('when mouse up on body', () => {
         beforeEach(() => {
-          jest.spyOn(component.find('span').instance(), 'getBoundingClientRect')
-            .mockImplementation(() => ({
-              width: 250
-            }));
-          event = new MouseEvent('mouseup');
+          event = new MouseEvent('mousedown');
 
-          document.body.dispatchEvent(event);
+          component.find(Resizer).find('div').instance().dispatchEvent(event);
         });
 
-        it('calls onResizeEnd with element width', () => {
-          expect(onResizeEnd).toHaveBeenCalledWith(event, 250);
+        it('calls onResizeStart prop with event', () => {
+          expect(onResizeStart).toHaveBeenCalledWith(event, position);
+        });
+
+        describe('when mouse up on body', () => {
+          beforeEach(() => {
+            jest.spyOn(component.find('span').instance(), 'getBoundingClientRect')
+              .mockImplementation(() => ({
+                [axis]: 250
+              }));
+            event = new MouseEvent('mouseup');
+
+            document.body.dispatchEvent(event);
+          });
+
+          it(`calls onResizeEnd with element ${axis}`, () => {
+            expect(onResizeEnd).toHaveBeenCalledWith(event, expect.objectContaining({
+              [axis]: 250
+            }));
+          });
         });
       });
     });
-  });
+  };
+
+  withCallbacks('right', 'width');
+  withCallbacks('left', 'width');
+  withCallbacks('top', 'height');
+  withCallbacks('bottom', 'height');
 });

@@ -4,6 +4,12 @@ import { storiesOf } from '@storybook/react';
 import { action } from '@storybook/addon-actions';
 import { linkTo } from '@storybook/addon-links';
 
+const specialAction = (name) =>
+  (...args) => {
+    console.log(name, args);
+    return action(name)(...args);
+  };
+
 import { Resizable, Resizer } from '../lib/index';
 
 storiesOf('Resizable', module)
@@ -14,8 +20,8 @@ storiesOf('Resizable', module)
   ))
   .add('every side resizable and centred', () => (
     <Resizable
-      onResizeStart={action('onResizeStart')}
-      onResizeEnd={action('onResizeEnd')}
+      onResizeStart={specialAction('onResizeStart')}
+      onResizeEnd={specialAction('onResizeEnd')}
     >
       <div style={{
         border: '1px solid black',
