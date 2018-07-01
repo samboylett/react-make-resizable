@@ -398,15 +398,18 @@ describe('Resizable', () => {
     describe(`with callbacks and position ${position}`, () => {
       let onResizeStart;
       let onResizeEnd;
+      let onResizeDrag;
 
       beforeEach(() => {
         onResizeStart = jest.fn();
         onResizeEnd = jest.fn();
+        onResizeDrag = jest.fn();
 
         component = mount((
           <Resizable
             onResizeStart={onResizeStart}
             onResizeEnd={onResizeEnd}
+            onResizeDrag={onResizeDrag}
           >
             <span>
               Foo bar
@@ -420,6 +423,11 @@ describe('Resizable', () => {
         let event;
 
         beforeEach(() => {
+          jest.spyOn(component.find('span').instance(), 'getBoundingClientRect')
+            .mockImplementation(() => ({
+              [axis]: 250
+            }));
+
           event = new MouseEvent('mousedown');
 
           component.find(Resizer).find('div').instance().dispatchEvent(event);
@@ -431,10 +439,6 @@ describe('Resizable', () => {
 
         describe('when mouse up on body', () => {
           beforeEach(() => {
-            jest.spyOn(component.find('span').instance(), 'getBoundingClientRect')
-              .mockImplementation(() => ({
-                [axis]: 250
-              }));
             event = new MouseEvent('mouseup');
 
             document.body.dispatchEvent(event);
@@ -442,6 +446,20 @@ describe('Resizable', () => {
 
           it(`calls onResizeEnd with element ${axis}`, () => {
             expect(onResizeEnd).toHaveBeenCalledWith(event, expect.objectContaining({
+              [axis]: 250
+            }), position);
+          });
+        });
+
+        describe('when mouse move on body', () => {
+          beforeEach(() => {
+            event = new MouseEvent('mousemove', { clientX: 180, clientY: 280 });
+
+            document.body.dispatchEvent(event);
+          });
+
+          it(`calls onResizeDrag with element ${axis}`, () => {
+            expect(onResizeDrag).toHaveBeenCalledWith(event, expect.objectContaining({
               [axis]: 250
             }), position);
           });
