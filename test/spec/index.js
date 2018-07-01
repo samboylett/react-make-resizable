@@ -396,12 +396,17 @@ describe('Resizable', () => {
 
   describe('with onResizeStart callback', () => {
     let onResizeStart;
+    let onResizeEnd;
 
     beforeEach(() => {
       onResizeStart = jest.fn();
+      onResizeEnd = jest.fn();
 
       component = mount((
-        <Resizable onResizeStart={onResizeStart}>
+        <Resizable
+          onResizeStart={onResizeStart}
+          onResizeEnd={onResizeEnd}
+        >
           <span>
             Foo bar
             <Resizer position="right" />
@@ -421,6 +426,22 @@ describe('Resizable', () => {
 
       it('calls onResizeStart prop with event', () => {
         expect(onResizeStart).toHaveBeenCalledWith(event, 'right');
+      });
+
+      describe('when mouse up on body', () => {
+        beforeEach(() => {
+          jest.spyOn(component.find('span').instance(), 'getBoundingClientRect')
+            .mockImplementation(() => ({
+              width: 250
+            }));
+          event = new MouseEvent('mouseup');
+
+          document.body.dispatchEvent(event);
+        });
+
+        it('calls onResizeEnd with element width', () => {
+          expect(onResizeEnd).toHaveBeenCalledWith(event, 250);
+        });
       });
     });
   });

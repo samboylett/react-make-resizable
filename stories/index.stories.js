@@ -13,7 +13,10 @@ storiesOf('Resizable', module)
     </div>
   ))
   .add('every side resizable and centred', () => (
-    <Resizable>
+    <Resizable
+      onResizeStart={action('onResizeStart')}
+      onResizeEnd={action('onResizeEnd')}
+    >
       <div style={{
         border: '1px solid black',
         display: 'inline-block',
