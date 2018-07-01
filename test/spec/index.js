@@ -20,9 +20,9 @@ describe('Resizer', () => {
     });
   });
 
-  const alwaysStyleTests = () => {
+  const alwaysStyleTests = (tagType = 'div') => {
     it('sets position to absolute', () => {
-      const { style } = component.find('div').instance();
+      const { style } = component.find(tagType).instance();
 
       expect(style).toEqual(expect.objectContaining({
         position: 'absolute'
@@ -70,6 +70,21 @@ describe('Resizer', () => {
     });
 
     alwaysStyleTests();
+  });
+
+  describe('with as prop', () => {
+    beforeEach(() => {
+      component = mount((
+        <Resizer position="left" as="p" />
+      ));
+    });
+
+    it('renders as that element', () => {
+      expect(component.find('div')).toHaveLength(0);
+      expect(component.find('p')).toHaveLength(1);
+    });
+
+    alwaysStyleTests('p');
   });
 
   describe('when position left', () => {
