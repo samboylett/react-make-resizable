@@ -179,6 +179,8 @@ describe('Resizable', () => {
 
     describe('when mouse down on resizer', () => {
       beforeEach(() => {
+        jest.spyOn(document.body, 'addEventListener');
+
         const event = new MouseEvent('mousedown');
 
         component.find(Resizer).find('div').instance().dispatchEvent(event);
@@ -190,6 +192,46 @@ describe('Resizable', () => {
 
       it('sets the body cursor to col-resize', () => {
         expect(document.body.style.cursor).toEqual('col-resize');
+      });
+
+      it('adds a mouseup event listener to the body', () => {
+        expect(document.body.addEventListener)
+          .toHaveBeenCalledWith('mouseup', expect.any(Function));
+      });
+
+      it('adds a mousemove event listener to the body', () => {
+        expect(document.body.addEventListener)
+          .toHaveBeenCalledWith('mousemove', expect.any(Function));
+      });
+
+      describe('when mouse up on body', () => {
+        beforeEach(() => {
+          jest.spyOn(document.body, 'removeEventListener');
+
+          const event = new MouseEvent('mouseup');
+
+          document.body.dispatchEvent(event);
+        });
+
+        it('sets the body cursor to auto', () => {
+          expect(document.body.style.cursor).toEqual('auto');
+        });
+
+        it('removes the mouseup event listener added the body', () => {
+          const [, func] =
+            document.body.addEventListener.mock.calls.find(([type]) => type === 'mouseup');
+
+          expect(document.body.removeEventListener)
+            .toHaveBeenCalledWith('mouseup', func);
+        });
+
+        it('removes the mousemove event listener added the body', () => {
+          const [, func] =
+            document.body.addEventListener.mock.calls.find(([type]) => type === 'mousemove');
+
+          expect(document.body.removeEventListener)
+            .toHaveBeenCalledWith('mousemove', func);
+        });
       });
     });
   });
