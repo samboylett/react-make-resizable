@@ -51,7 +51,7 @@ storiesOf('Resizable', module)
         padding: '5px'
       }}>
         Foo bar
-        <Resizer position="right" thickness={3} style={{ background: 'blue' }} />
+        <Resizer position="right" thickness={5} style={{ background: 'blue' }} />
       </div>
     </Resizable>
   ));

@@ -35,7 +35,7 @@ describe('Resizer', () => {
       const { style } = component.find('div').instance();
 
       expect(style).toEqual(expect.objectContaining({
-        width: '1px',
+        width: '3px',
         height: '',
         top: '0px',
         bottom: '0px',
@@ -49,7 +49,7 @@ describe('Resizer', () => {
       const { style } = component.find('div').instance();
 
       expect(style).toEqual(expect.objectContaining({
-        height: '1px',
+        height: '3px',
         width: '',
         left: '0px',
         right: '0px',
