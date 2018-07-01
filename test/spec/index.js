@@ -9,6 +9,26 @@ Enzyme.configure({ adapter: new Adapter() });
 
 let component;
 
+describe('makeResizable', () => {
+  it('sets displayName to makeResizable(Component) if no displayName or name property', () => {
+    expect(makeResizable('div').displayName).toEqual('makeResizable(Component)');
+  });
+
+  it('sets displayName to makeResizable(Foo) if no displayName but name set to Foo', () => {
+    expect(makeResizable({ name: 'Foo' }).displayName).toEqual('makeResizable(Foo)');
+  });
+
+  it('sets displayName to makeResizable(Bar) when passed component called Bar', () => {
+    class Bar extends React.Component {
+      render() {
+        return null;
+      }
+    }
+
+    expect(makeResizable(Bar).displayName).toEqual('makeResizable(Bar)');
+  });
+});
+
 describe('Resizer', () => {
   describe('when position not left, right, top or bottom', () => {
     it('throws an error', () => {
