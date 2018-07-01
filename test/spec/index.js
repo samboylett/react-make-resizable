@@ -269,6 +269,41 @@ describe('Resizable', () => {
     });
   });
 
+  describe('with left resizer', () => {
+    beforeEach(() => {
+      component = mount((
+        <Resizable>
+          <span>
+            Foo bar
+            <Resizer position="left" />
+          </span>
+        </Resizable>
+      ));
+    });
+
+    mouseDownTests(() => {
+      it('sets the body cursor to col-resize', () => {
+        expect(document.body.style.cursor).toEqual('col-resize');
+      });
+
+      it('sets the position var to left', () => {
+        expect(component.instance().position).toEqual('left');
+      });
+
+      describe('when mouse move on body', () => {
+        beforeEach(() => {
+          const event = new MouseEvent('mousemove', { clientX: 45 });
+
+          document.body.dispatchEvent(event);
+        });
+
+        it('sets the width to the mouse distance from the right side', () => {
+          expect(component.find('span').instance().style.width).toEqual('5px');
+        });
+      });
+    });
+  });
+
   describe('with top resizer', () => {
     beforeEach(() => {
       component = mount((
@@ -299,6 +334,41 @@ describe('Resizable', () => {
 
         it('sets the height to the mouse distance from the bottom side', () => {
           expect(component.find('span').instance().style.height).toEqual('10px');
+        });
+      });
+    });
+  });
+
+  describe('with bottom resizer', () => {
+    beforeEach(() => {
+      component = mount((
+        <Resizable>
+          <span>
+            Foo bar
+            <Resizer position="bottom" />
+          </span>
+        </Resizable>
+      ));
+    });
+
+    mouseDownTests(() => {
+      it('sets the body cursor to row-resize', () => {
+        expect(document.body.style.cursor).toEqual('row-resize');
+      });
+
+      it('sets the position var to bottom', () => {
+        expect(component.instance().position).toEqual('bottom');
+      });
+
+      describe('when mouse move on body', () => {
+        beforeEach(() => {
+          const event = new MouseEvent('mousemove', { clientY: 150 });
+
+          document.body.dispatchEvent(event);
+        });
+
+        it('sets the height to the mouse distance from the top side', () => {
+          expect(component.find('span').instance().style.height).toEqual('140px');
         });
       });
     });
