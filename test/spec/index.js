@@ -20,7 +20,7 @@ describe('makeResizable', () => {
 
   it('sets displayName to makeResizable(Bar) when passed component called Bar', () => {
     class Bar extends React.Component {
-      render() {
+      render() { // eslint-disable-line class-methods-use-this
         return null;
       }
     }
@@ -225,13 +225,15 @@ describe('Resizable', () => {
   });
 
   describe('when element position is set', () => {
-    testsForComponent(() => ({}), (
+    testsForComponent(
+      () => ({}), (
       <div style={{ position: 'absolute' }}>Foo bar</div>
-    ), () => {
-      it('does not change it', () => {
-        expect(component.find('div').instance().style.position).toEqual('absolute');
-      });
-    });
+      ), () => {
+        it('does not change it', () => {
+          expect(component.find('div').instance().style.position).toEqual('absolute');
+        });
+      }
+    );
   });
 
   describe('with one child', () => {
