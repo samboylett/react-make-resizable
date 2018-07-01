@@ -7,13 +7,21 @@ import { linkTo } from '@storybook/addon-links';
 import { Resizable, Resizer } from '../lib/index';
 
 storiesOf('Resizable', module)
-  .add('every side resize', () => (
+  .addDecorator(story => (
+    <div style={{ height: '100vh', width: '100vw' }}>
+      {story()}
+    </div>
+  ))
+  .add('every side resizable and centred', () => (
     <Resizable>
       <div style={{
         border: '1px solid black',
         display: 'inline-block',
         padding: '5px',
-        margin: '10px 10px 500px 10px'
+        position: 'absolute',
+        left: '50%',
+        top: '50%',
+        transform: 'translate(-50%, -50%)'
       }}>
         Foo bar
         <Resizer position="top" />
@@ -28,8 +36,7 @@ storiesOf('Resizable', module)
       <div style={{
         border: '1px solid black',
         display: 'inline-block',
-        padding: '5px',
-        margin: '10px 10px 500px 10px'
+        padding: '5px'
       }}>
         Foo bar
         <Resizer position="right" />
@@ -41,8 +48,7 @@ storiesOf('Resizable', module)
       <div style={{
         border: '1px solid black',
         display: 'inline-block',
-        padding: '5px',
-        margin: '10px 10px 500px 10px'
+        padding: '5px'
       }}>
         Foo bar
         <Resizer position="right" thickness={3} style={{ background: 'blue' }} />
