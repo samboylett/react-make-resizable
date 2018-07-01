@@ -5,6 +5,7 @@
 [![Build Status](https://travis-ci.org/samboylett/react-make-resizable.svg?branch=master)](https://travis-ci.org/samboylett/react-make-resizable)
 [![codecov](https://codecov.io/gh/samboylett/react-make-resizable/branch/master/graph/badge.svg)](https://codecov.io/gh/samboylett/react-make-resizable)
 [![Mutation testing badge](https://badge.stryker-mutator.io/github.com/samboylett/react-make-resizable/master)](https://stryker-mutator.github.io)
+[![Codacy Badge](https://api.codacy.com/project/badge/Grade/16c9ec7ea48d408c96c9fdda7615fbb0)](https://www.codacy.com/app/samboylett/react-make-resizable?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=samboylett/react-make-resizable&amp;utm_campaign=Badge_Grade)
 
 ## Installation
 
