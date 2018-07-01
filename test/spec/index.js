@@ -169,10 +169,10 @@ describe('Resizable', () => {
     beforeEach(() => {
       component = mount((
         <Resizable>
-          <div>
+          <span>
             Foo bar
             <Resizer position="right" />
-          </div>
+          </span>
         </Resizable>
       ));
     });
@@ -198,6 +198,26 @@ describe('Resizable', () => {
         it(`adds a ${type} event listener to the body`, () => {
           expect(document.body.addEventListener)
             .toHaveBeenCalledWith(type, expect.any(Function));
+        });
+      });
+
+      describe('when mouse move on body', () => {
+        beforeEach(() => {
+          jest.spyOn(component.find('span').instance(), 'getBoundingClientRect')
+            .mockImplementation(() => ({
+              left: 10,
+              top: 10,
+              right: 50,
+              bottom: 50
+            }));
+
+          const event = new MouseEvent('mousemove', { clientX: 100 });
+
+          document.body.dispatchEvent(event);
+        });
+
+        it('sets the style to the mouse distance from the left side', () => {
+          expect(component.find('span').instance().style.width).toEqual('90px');
         });
       });
 
