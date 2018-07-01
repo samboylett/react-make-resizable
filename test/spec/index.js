@@ -443,7 +443,7 @@ describe('Resizable', () => {
           it(`calls onResizeEnd with element ${axis}`, () => {
             expect(onResizeEnd).toHaveBeenCalledWith(event, expect.objectContaining({
               [axis]: 250
-            }));
+            }), position);
           });
         });
       });
