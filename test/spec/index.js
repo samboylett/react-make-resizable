@@ -169,31 +169,43 @@ describe('Resizer', () => {
 });
 
 describe('Resizable', () => {
+  const TestComponent = ({ children }) => children;
+
   const testsForComponent = (props, children, tests) => {
-    describe('using Resizable', () => {
-      beforeEach(() => {
-        component = mount((
-          <Resizable {...props()}>
-            <span>{children}</span>
-          </Resizable>
-        ));
+    const sharedTests = (useChildren) => {
+      describe('using Resizable', () => {
+        beforeEach(() => {
+          component = mount((
+            <Resizable {...props()}>
+              <span>{useChildren}</span>
+            </Resizable>
+          ));
+        });
+
+        tests();
       });
 
-      tests();
+      describe('using makeResizable', () => {
+        const Component = makeResizable('span');
+
+        beforeEach(() => {
+          component = mount((
+            <Component {...props()}>
+              {useChildren}
+            </Component>
+          ));
+        });
+
+        tests();
+      });
+    };
+
+    describe('with Resizer in root', () => {
+      sharedTests(children);
     });
 
-    describe('using makeResizable', () => {
-      const Component = makeResizable('span');
-
-      beforeEach(() => {
-        component = mount((
-          <Component {...props()}>
-            {children}
-          </Component>
-        ));
-      });
-
-      tests();
+    describe('with Resizer in child element', () => {
+      sharedTests(<p>{children}</p>);
     });
   };
 
