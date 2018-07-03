@@ -169,8 +169,6 @@ describe('Resizer', () => {
 });
 
 describe('Resizable', () => {
-  const TestComponent = ({ children }) => children;
-
   const testsForComponent = (props, children, tests) => {
     const sharedTests = (useChildren) => {
       describe('using Resizable', () => {
