@@ -221,6 +221,19 @@ describe('Resizable', () => {
     });
   };
 
+  describe('when passed more than 1 child', () => {
+    it('throws an error', () => {
+      expect(() => {
+        mount((
+          <Resizable>
+            <div>Foo</div>
+            <div>Bar</div>
+          </Resizable>
+        ));
+      }).toThrow();
+    });
+  });
+
   describe('when element position is set', () => {
     testsForComponent(
       () => ({}), (
