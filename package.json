@@ -28,6 +28,11 @@
       "^.+\\.js$": "babel-jest"
     },
     "coverageDirectory": "./coverage/",
+    "collectCoverageFrom": [
+      "lib/**/*.js",
+      "!**/node_modules/**",
+      "!**/test/**"
+    ],
     "collectCoverage": true,
     "coverageThreshold": {
       "global": {

@@ -19,11 +19,7 @@ describe('makeResizable', () => {
   });
 
   it('sets displayName to makeResizable(Bar) when passed component called Bar', () => {
-    class Bar extends React.Component {
-      render() { // eslint-disable-line class-methods-use-this
-        return null;
-      }
-    }
+    class Bar extends React.Component {}
 
     expect(makeResizable(Bar).displayName).toEqual('makeResizable(Bar)');
   });
