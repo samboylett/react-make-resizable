@@ -5,8 +5,8 @@
   "author": "Sam Boylett",
   "main": "dist/index.js",
   "scripts": {
-    "prepublishOnly": "NODE_ENV=production npm run build",
-    "build": "webpack --bail --progress --profile && flow-copy-source lib dist",
+    "prepublishOnly": "npm run build",
+    "build": "webpack && flow-copy-source lib dist",
     "lint": "eslint lib && eslint test/spec",
     "flow": "./node_modules/.bin/flow",
     "test": "NODE_ENV=test jest --coverage",
