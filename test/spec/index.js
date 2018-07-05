@@ -165,6 +165,16 @@ describe('Resizer', () => {
 });
 
 describe('Resizable', () => {
+  it('does not crash if DOM element is text', () => {
+    component = expect(() => {
+      mount((
+        <Resizable>
+          Test
+        </Resizable>
+      ));
+    }).not.toThrow();
+  });
+
   const testsForComponent = (props, children, tests) => {
     const sharedTests = (useChildren) => {
       describe('using Resizable', () => {
