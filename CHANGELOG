@@ -2,6 +2,10 @@
 
 ## Unreleased
 
+## 0.2.7
+
+* Handle falsy elements
+
 ## 0.2.6
 
 * Handle falsy styles
