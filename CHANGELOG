@@ -2,6 +2,10 @@
 
 ## Unreleased
 
+## 0.2.6
+
+* Handle falsy styles
+
 ## 0.2.0
 
 * Make sure Resizers events are attached if they're placed in a component further down the chain
