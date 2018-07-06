@@ -337,6 +337,18 @@ describe('Resizable', () => {
             expect(component.find('span').instance().style.width).toEqual('90px');
           });
         });
+
+        describe('when mouse move to left of resizable', () => {
+          beforeEach(() => {
+            const event = new MouseEvent('mousemove', { clientX: -20 });
+
+            document.body.dispatchEvent(event);
+          });
+
+          it('sets the width to 0', () => {
+            expect(component.find('span').instance().style.width).toEqual('0px');
+          });
+        });
       });
     });
   });
