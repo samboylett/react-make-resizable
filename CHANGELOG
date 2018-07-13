@@ -2,6 +2,10 @@
 
 ## Unreleased
 
+## 0.2.10
+
+* Don't include React in the bundle
+
 ## 0.2.9
 
 * Don't allow negative widths
